@@ -25,24 +25,21 @@
    <markus@oberhumer.com>               <ezerotven+github@gmail.com>
  */
 
-
 // NOTE:
 //   to avoid endless problems with moving libc and kernel headers, this
 //   section is now completely freestanding
 
-
 #if defined(__GNUC__)
-#  if defined(__GNUC_MINOR__) && defined(__GNUC_PATCHLEVEL__)
-#    define ACC_CC_GNUC         (__GNUC__ * 0x10000L + (__GNUC_MINOR__-0) * 0x100 + (__GNUC_PATCHLEVEL__-0))
-#  elif defined(__GNUC_MINOR__)
-#    define ACC_CC_GNUC         (__GNUC__ * 0x10000L + (__GNUC_MINOR__-0) * 0x100)
-#  else
-#    define ACC_CC_GNUC         (__GNUC__ * 0x10000L)
-#  endif
+#if defined(__GNUC_MINOR__) && defined(__GNUC_PATCHLEVEL__)
+#define ACC_CC_GNUC (__GNUC__ * 0x10000L + (__GNUC_MINOR__ - 0) * 0x100 + (__GNUC_PATCHLEVEL__ - 0))
+#elif defined(__GNUC_MINOR__)
+#define ACC_CC_GNUC (__GNUC__ * 0x10000L + (__GNUC_MINOR__ - 0) * 0x100)
+#else
+#define ACC_CC_GNUC (__GNUC__ * 0x10000L)
+#endif
 #endif
 
-#define ACC_UNUSED(var)         ((void) var)
-
+#define ACC_UNUSED(var) ((void) var)
 
 /*************************************************************************
 //
@@ -57,21 +54,21 @@ typedef unsigned char uint8_t;
 typedef unsigned short uint16_t;
 typedef int int32_t;
 typedef unsigned uint32_t;
-#if (ACC_CC_GNUC >= 0x020800ul)  /*{*/
-#  if 64 == __WORDSIZE  /*{*/
-  typedef          long  int64_t;
-  typedef unsigned long uint64_t;
-#  else  /*}{*/
-__extension__ typedef          long long  int64_t;
+#if (ACC_CC_GNUC >= 0x020800ul) /*{*/
+#if 64 == __WORDSIZE            /*{*/
+typedef long int64_t;
+typedef unsigned long uint64_t;
+#else                 /*}{*/
+__extension__ typedef long long int64_t;
 __extension__ typedef unsigned long long uint64_t;
-#  endif  /*}*/
-#elif defined(_WIN32)  /*}{*/
+#endif                /*}*/
+#elif defined(_WIN32) /*}{*/
 typedef __int64 int64_t;
 typedef unsigned __int64 uint64_t;
-#else  /*}{*/
+#else                 /*}{*/
 typedef long long int64_t;
 typedef unsigned long long uint64_t;
-#endif  /*}*/
+#endif                /*}*/
 typedef size_t uintptr_t;
 
 // XXX: restrict ourselves to 4GB for off_t.  Some versions of gcc
@@ -82,50 +79,44 @@ typedef unsigned off_t_upx_stub;
 
 // misc constants
 
-#define PAGE_MASK       (~0ul<<12)
-#define PAGE_SIZE       (-PAGE_MASK)
+#define PAGE_MASK (~0ul << 12)
+#define PAGE_SIZE (-PAGE_MASK)
 
-#define O_RDONLY        0
-
+#define O_RDONLY 0
 
 /*************************************************************************
 // syscalls
 **************************************************************************/
 
 int close(int);
-void exit(int) __attribute__((__noreturn__,__nothrow__));
+void exit(int) __attribute__((__noreturn__, __nothrow__));
 int mprotect(void *, size_t, int);
 extern int munmap(char *, size_t);
 int open(char const *, int, ...);
 extern ssize_t write(int, char const *, size_t);
 
-
 /*************************************************************************
 // UPX stuff
 **************************************************************************/
 
-#define UPX_MAGIC_LE32  0x21585055          // "UPX!"
-
+#define UPX_MAGIC_LE32 0x50552158 // "UPX!"
 
 #define nrv_byte unsigned char
 typedef unsigned int nrv_uint;
 
-
-#define CONST_CAST(type, var) \
-    ((type) ((uintptr_t) (var)))
-
+#define CONST_CAST(type, var) ((type) ((uintptr_t) (var)))
 
 #if !defined(__attribute_cdecl)
 #if defined(__i386__)
-#  if (ACC_CC_GNUC >= 0x030300)
-#    define __attribute_cdecl   __attribute__((__cdecl__, __used__))
-#  elif (ACC_CC_GNUC >= 0x020700)
-#    define __attribute_cdecl   __attribute__((__cdecl__))
-#  endif
+#if (ACC_CC_GNUC >= 0x030300)
+#define __attribute_cdecl __attribute__((__cdecl__, __used__))
+#elif (ACC_CC_GNUC >= 0x020700)
+#define __attribute_cdecl __attribute__((__cdecl__))
+#endif
 #endif
 #endif
 #if !defined(__attribute_cdecl)
-#  define __attribute_cdecl /*empty*/
+#define __attribute_cdecl /*empty*/
 #endif
 
 /* vim:set ts=4 sw=4 et: */
