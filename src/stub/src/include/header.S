@@ -31,7 +31,7 @@
 
 section         UPX1HEAD
 
-                .byte   85,80,88,33     //  0  UPX_MAGIC_LE32 aka "UPX!"
+                .byte   88,33,85,80     //  0  UPX_MAGIC_LE32 aka "UPX!"
 #if 0
                 .byte   161,216,208,213 //  4  UPX_MAGIC2_LE32
 #else

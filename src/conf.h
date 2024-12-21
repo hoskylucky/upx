@@ -292,21 +292,21 @@ typedef long long upx_off_t;
 
 #if !defined(S_ISREG)
 #if defined(S_IFMT) && defined(S_IFREG)
-#define S_ISREG(m) (((m) &S_IFMT) == S_IFREG)
+#define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
 #else
 #error "S_ISREG"
 #endif
 #endif
 #if !defined(S_ISDIR)
 #if defined(S_IFMT) && defined(S_IFDIR)
-#define S_ISDIR(m) (((m) &S_IFMT) == S_IFDIR)
+#define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
 #else
 #error "S_ISDIR"
 #endif
 #endif
 #if !defined(S_ISCHR)
 #if defined(S_IFMT) && defined(S_IFCHR)
-#define S_ISCHR(m) (((m) &S_IFMT) == S_IFCHR)
+#define S_ISCHR(m) (((m) & S_IFMT) == S_IFCHR)
 #endif
 #endif
 
@@ -374,7 +374,7 @@ typedef long long upx_off_t;
 inline void NO_printf(const char *, ...) noexcept attribute_format(1, 2);
 inline void NO_printf(const char *, ...) noexcept {}
 inline void NO_fprintf(FILE *, const char *, ...) noexcept attribute_format(2, 3);
-inline void NO_fprintf(FILE *, const char *, ...) noexcept {}
+inline void NO_fprintf(FILE *, const char *, ...) noexcept{}
 
 #if __has_builtin(__builtin_memcmp)
 #define upx_memcmp_inline __builtin_memcmp
@@ -506,7 +506,7 @@ using upx::tribool;
 #define EXIT_INTERNAL   1
 
 // magic constants for patching
-#define UPX_MAGIC_LE32  0x21585055 /* "UPX!" */
+#define UPX_MAGIC_LE32  0x50552158 /* "UPX!" */
 #define UPX_MAGIC2_LE32 0xD5D0D8A1
 
 // upx_compress() error codes
@@ -611,7 +611,7 @@ using upx::tribool;
 #define M_IS_NRV2D(x)   ((x) >= M_NRV2D_LE32 && (x) <= M_NRV2D_LE16)
 #define M_IS_NRV2E(x)   ((x) >= M_NRV2E_LE32 && (x) <= M_NRV2E_LE16)
 // #define M_IS_CL1B(x)    ((x) >= M_CL1B_LE32  && (x) <= M_CL1B_LE16)
-#define M_IS_LZMA(x)    (((x) &255) == M_LZMA)
+#define M_IS_LZMA(x)    (((x) & 255) == M_LZMA)
 #define M_IS_DEFLATE(x) ((x) == M_DEFLATE)
 #define M_IS_ZSTD(x)    ((x) == M_ZSTD)
 #define M_IS_BZIP2(x)   ((x) == M_BZIP2)
